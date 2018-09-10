@@ -64,6 +64,7 @@ void DisplayIntroduction() {
 	// This code is not going to change, so I have put it in its own function.
 	std::cout << "\n\n" << "Welcome to Bulls and Cows, a fun word game" << std::endl;
 	std::cout << "Can you guess the " << game.GetWordLength() << " letter isogram I'm thinking of?" << std::endl << "\n";
+	std::cout << "For every letter correct, I will give you bulls, for every letter out of place, but in the word, I will give you cows.\n\n";
 	
 }
 
