@@ -63,8 +63,19 @@ int main()
 void DisplayIntroduction() {
 	// This code is not going to change, so I have put it in its own function.
 	std::cout << "\n\n" << "Welcome to Bulls and Cows, a fun word game" << std::endl;
+	std::cout << std::endl;
+	std::cout << " }____{                  ___" << std::endl;
+	std::cout << " /    \\                 /   \\" << std::endl;
+	std::cout << "(O  O )                (O  O)        " << std::endl;
+	std::cout << " \\   /____(\\     /)____\\   /     " << std::endl;
+	std::cout << "  \\ / BULL| \\   / | COW \\ /          " << std::endl;
+	std::cout << "   O-,----/  *  * \\------O             " << std::endl;
+	std::cout << "    \\^    \\^       \\^    \\^            " << std::endl;
+	std::cout << "If you get a letter correct in the right place, you will get a bull. \n";
+	std::cout << "If you get a letter correct but in the wrong place, you'll get a cow. \n";
+	std::cout << "You have " << game.GetMaxTry() << " tries to guess the word. ";
 	std::cout << "Can you guess the " << game.GetWordLength() << " letter isogram I'm thinking of?" << std::endl << "\n";
-	std::cout << "For every letter correct, I will give you bulls, for every letter out of place, but in the word, I will give you cows.\n\n";
+
 	
 }
 
@@ -74,7 +85,7 @@ FText GetValidGuess() {
 	FText Guess = "";
 	
 	do {
-		std::cout << "Try " << game.GetCurrentTry() << ". ";
+		std::cout << "Try " << game.GetCurrentTry() << " of " << game.GetMaxTry() << ". ";
 		std::cout << "Enter your guess: ";
 		
 		getline(std::cin, Guess);

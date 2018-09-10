@@ -21,10 +21,8 @@ FBullCowGame::FBullCowGame()
 
 int32 FBullCowGame::Reset()
 {
-	constexpr int32 MAX_TRIES = 10;
 	const FString HIDDEN_WORD = "DUCKY";
 
-	MyMaxTry = MAX_TRIES;
 	MyCurrentTry = 1;
 	MyWord = HIDDEN_WORD;
 	bGameIsWon = false;
@@ -44,14 +42,21 @@ int32 FBullCowGame::DeterminePlayAgain(FString response)
 	}
 }
 
-int32 FBullCowGame::GetMaxTry() const{return MyMaxTry;}
+
 int32 FBullCowGame::GetCurrentTry() const{return MyCurrentTry;}
 int32 FBullCowGame::GetWordLength() const{return MyWord.length();}
 bool FBullCowGame::IsGameWon() { return bGameIsWon; };
 
+int32 FBullCowGame::GetMaxTry() const { 
+	TMap<int32, int32> WordLengthToMaxTries{ {3,5}, {4,5}, {5,5}, {6,5} };
+
+
+	return WordLengthToMaxTries[MyWord.length()]; 
+}
+
 bool FBullCowGame::IsPlaying()
 {
-	if (!IsGameWon() && MyCurrentTry <= MyMaxTry) {
+	if (!IsGameWon() && MyCurrentTry <= GetMaxTry()) {
 		return true;
 	}
 	return false;
@@ -205,6 +210,7 @@ bool FBullCowGame::IsIsogram(FString guess) const
 	// default is it is Isogram.
 	return true;
 }
+
 
 std::map<char,int> FBullCowGame::NORDER(FString)
 {

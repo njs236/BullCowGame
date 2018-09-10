@@ -52,14 +52,11 @@ public:
 
 private:
 	int32 MyCurrentTry;
-	int32 MyMaxTry;
 	FString MyWord;
 	bool bGameIsWon = false;
 	FString RandomlySelectWordForGame();
 	bool IsLowercase(FString) const;
 	bool IsIsogram(FString word) const;
-	
-	
 	
 
 };
