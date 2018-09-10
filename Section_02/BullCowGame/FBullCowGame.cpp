@@ -21,7 +21,7 @@ FBullCowGame::FBullCowGame()
 
 int32 FBullCowGame::Reset()
 {
-	const FString HIDDEN_WORD = "DUCKY";
+	const FString HIDDEN_WORD = "planet";
 
 	MyCurrentTry = 1;
 	MyWord = HIDDEN_WORD;
@@ -135,10 +135,7 @@ bool FBullCowGame::IsLowercase(FString guess) const
 {
 	if (guess.length() < 1) { return true; }
 	for (auto letter : guess) {
-		if (islower(letter)) {
-			return true;
-		}
-		else {
+		if (!islower(letter)) {
 			return false;
 		}
 	}
