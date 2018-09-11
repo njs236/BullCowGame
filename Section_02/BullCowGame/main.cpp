@@ -8,6 +8,7 @@ interaction. For game logic, see the FBullCowGame class.
 #include <map>
 #include <vector>
 
+
 FBullCowGame game;
 
 using FText = std::string;
@@ -15,6 +16,7 @@ using int32 = int;
 
 void DisplayIntroduction();
 void StartGame();
+bool AskDifficulty();
 FText GetValidGuess();
 bool AskToPlayAgain();
 void PrintGameSummary();
@@ -28,6 +30,8 @@ std::vector<char> extract_keys(std::map<char, int> const& input_map)
 	}
 	return retval;
 };
+
+
 
 int main()
 {
@@ -47,6 +51,7 @@ int main()
 	
 	do {
 		DisplayIntroduction();
+		AskDifficulty();
 		StartGame();
 		bPlayAgain = AskToPlayAgain();
 	} while (bPlayAgain);
@@ -73,8 +78,8 @@ void DisplayIntroduction() {
 	std::cout << "    \\^    \\^       \\^    \\^            " << std::endl;
 	std::cout << "If you get a letter correct in the right place, you will get a bull. \n";
 	std::cout << "If you get a letter correct but in the wrong place, you'll get a cow. \n";
-	std::cout << "You have " << game.GetMaxTry() << " tries to guess the word. ";
-	std::cout << "Can you guess the " << game.GetWordLength() << " letter isogram I'm thinking of?" << std::endl << "\n";
+	
+	
 
 	
 }
@@ -110,7 +115,9 @@ FText GetValidGuess() {
 void StartGame() {
 
 	// Reset Game.
+	
 	game.Reset();
+	
 	// Loop while game is playing.
 	while (game.IsPlaying()) {
 		// Display Try Number.
@@ -151,7 +158,7 @@ void PrintGameSummary()
 }
 
 bool AskToPlayAgain() {
-	std::cout << "Do you want to play again with the same word? ";
+	std::cout << "Do you want to play again? ";
 
 	// these are the valid responses given.
 	FText Response = "";
@@ -168,5 +175,40 @@ bool AskToPlayAgain() {
 		std::cout << "Invalid Response!" << std::endl;
 		AskToPlayAgain();
 	}
+	return false;
+}
+
+bool AskDifficulty()
+{
+	std::cout << "Choose Difficulty Level: (1-3)\n ";
+
+	// these are the valid responses given.
+	char Response[256];
+	fgets(Response,256, stdin);
+	int32 i = atoi(Response);
+	EDifficultyResult response = game.CheckDifficultyValidity(Response);
+	if (response == EDifficultyResult::OK) {
+		game.SetDifficultyLevel(i);
+		switch (game.GetDifficultyLevel()) {
+		case EDifficultyLevel::Easy:
+			std::cout << "You've chosen difficulty Level Easy. \n\n";
+			break;
+		case EDifficultyLevel::Medium:
+			std::cout << "You've chosen difficulty Level Medium.\n\n";
+			break;
+		case EDifficultyLevel::Hard:
+			std::cout << "You've chosen difficulty Level Hard.\n\n";
+			break;
+		default:
+			break;
+
+		}
+	}
+	else {
+		std::cout << "Invalid Response!" << std::endl;
+		AskDifficulty();
+	}
+	std::cout << "You have " << game.GetMaxTry() << " tries to guess the word. ";
+	std::cout << "Can you guess the " << game.GetWordLength() << " letter isogram I'm thinking of?" << std::endl << "\n";
 	return false;
 }

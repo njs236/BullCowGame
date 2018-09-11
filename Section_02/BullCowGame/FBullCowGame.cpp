@@ -8,6 +8,9 @@
 #include <algorithm>
 #include <math.h>
 #include <map>
+#include <unordered_set>
+#include <fstream>
+#include <time.h>
 #define TMap std::map
 
 using int32 = int;
@@ -15,19 +18,24 @@ using FString = std::string;
 
 FBullCowGame::FBullCowGame()
 {
-
-	Reset();
+	//LoadEasyDictionary;
+	//LoadDictionary();
+	//Reset();
 }
 
 int32 FBullCowGame::Reset()
 {
-	const FString HIDDEN_WORD = "planet";
+	//const FString HIDDEN_WORD = "planet";
+	//DifficultyLevel = EDifficultyLevel::Invalid;
 
 	MyCurrentTry = 1;
-	MyWord = HIDDEN_WORD;
+	//MyWord = HIDDEN_WORD;
+	
 	bGameIsWon = false;
 	return 0;
 }
+
+
 
 int32 FBullCowGame::DeterminePlayAgain(FString response)
 {
@@ -45,10 +53,43 @@ int32 FBullCowGame::DeterminePlayAgain(FString response)
 
 int32 FBullCowGame::GetCurrentTry() const{return MyCurrentTry;}
 int32 FBullCowGame::GetWordLength() const{return MyWord.length();}
+
+EDifficultyResult FBullCowGame::CheckDifficultyValidity(FString response)
+{
+	if (response == "1\n" || response == "2\n" || response == "3\n") {
+		return EDifficultyResult::OK;
+	}
+	return EDifficultyResult::Not_Valid_Response;
+}
+EDifficultyLevel FBullCowGame::GetDifficultyLevel() const
+{
+	return DifficultyLevel;
+}
+void FBullCowGame::SetDifficultyLevel(int32 level)
+{
+
+	switch (level) {
+		case 1: //easy
+			DifficultyLevel = EDifficultyLevel::Easy;
+			break;
+		case 2: //medium
+			DifficultyLevel = EDifficultyLevel::Medium;
+			break;
+		case 3: //hard
+			DifficultyLevel = EDifficultyLevel::Hard;
+			break;
+		default:
+			break;
+	}
+
+	LoadEasyDictionary();
+	LoadWord();
+	
+}
 bool FBullCowGame::IsGameWon() { return bGameIsWon; };
 
 int32 FBullCowGame::GetMaxTry() const { 
-	TMap<int32, int32> WordLengthToMaxTries{ {3,5}, {4,5}, {5,5}, {6,5} };
+	TMap<int32, int32> WordLengthToMaxTries{ {3,5}, {4,5}, {5,5}, {6,5} ,{7,5}, {8,6}, {9,6}, {10,7}, {11,8}, {12,9}, {13,10}, {14,12}, {15, 15}, {16,20} };
 
 
 	return WordLengthToMaxTries[MyWord.length()]; 
@@ -124,6 +165,116 @@ FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess)
 	}
 
 	return BullCowCount;
+}
+
+void FBullCowGame::LoadDictionary()
+{
+	if (DifficultyLevel == EDifficultyLevel::Invalid) {
+		return;
+	}
+		std::ifstream ifs;
+		FString word = "";
+
+		ifs.open("words.txt", std::ifstream::in);
+
+		char c = ifs.get();
+		// randomly select a word from total word list.
+
+		while (ifs.good()) {
+			word += c;
+			if (c == '\n') {
+				if (word.length() <= WordLength) { // check to see word is within difficulty word length.
+					if (IsIsogram(word)) { // check to see if word is an isogram.
+
+						words.insert(word);
+
+					}
+				}
+				word = "";
+			}
+			c = ifs.get();
+		}
+		ifs.close();
+
+		return;
+
+}
+
+
+
+void FBullCowGame::LoadEasyDictionary()
+{
+	if (DifficultyLevel == EDifficultyLevel::Invalid) {
+		return;
+	}
+	std::ifstream ifs;
+	FString word = "";
+
+	ifs.open("shortwords.txt", std::ifstream::in);
+
+	char c = ifs.get();
+	// randomly select a word from total word list.
+	FWordLength length = DetermineWordLength();
+	while (ifs.good()) {
+		word += c;
+		if (c == '\n') {
+			//std::cout << length.beginning;
+			//std::cout << length.end;
+			//std::cout << word.length();
+			if (length.beginning <= word.length() - 1) {
+				if (word.length() - 1 <= length.end) {// check to see word is within difficulty word length.
+					if (IsIsogram(word)) { // check to see if word is an isogram.
+						word.pop_back();
+					words.insert(word);
+
+					}
+				}
+			}
+			word = "";
+		}
+		c = ifs.get();
+	}
+	ifs.close();
+
+	return;
+}
+
+void FBullCowGame::LoadWord()
+{
+	int iSecret;
+	int count = 0;
+	srand(time(NULL));
+	iSecret = rand() % words.size();
+	for (auto word : words) {
+		count++;
+		if (count == iSecret) {
+			MyWord = word;
+		}
+	}
+
+}
+
+FWordLength FBullCowGame::DetermineWordLength()
+{
+	FWordLength length;
+	switch (GetDifficultyLevel()) {
+	case EDifficultyLevel::Easy:
+		length.beginning = 3;
+		length.end = 5;
+		break;
+	case EDifficultyLevel::Medium:
+		length.beginning = 5;
+		length.end = 7;
+		break;
+	case EDifficultyLevel::Hard:
+		length.beginning = 5;
+		length.end = 7;
+		break;
+	default:
+		break;
+
+	}
+	return length;
 }
 
 FString FBullCowGame::RandomlySelectWordForGame()
@@ -202,6 +353,7 @@ bool FBullCowGame::IsIsogram(FString guess) const
 			return false;//break and Is Not Isogram
 		} else {// otherwise
 			LetterSeen[letter] = true;//add character to map
+		
 		}
 	}
 	// default is it is Isogram.

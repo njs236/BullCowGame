@@ -26,5 +26,16 @@
     <ClInclude Include="FBullCowGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="words.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="shortwords.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
