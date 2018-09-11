@@ -20,6 +20,35 @@ struct FWordLength
 	int32 end = 0;
 };
 
+struct FEasyDifficulty
+{
+	int32 Easyshort = 3;
+	int32 Easylong = 5;
+	int32 words = 10;
+
+};
+struct FMediumDifficulty
+{
+	int32 Mediumshort = 6;
+	int32 Mediumlong = 7;
+	int32 words = 10;
+
+};
+struct FHardDifficulty
+{
+	int32 Hardshort = 8;
+	int32 Hardlong = 9;
+	int32 words = 10;
+
+};
+struct FInsaneDifficulty
+{
+	int32 Insaneshort = 10;
+	int32 Insanelong = 16;
+	int32 words = 10;
+
+};
+
 //another way to do Validity would be to use enum
 
 enum class EDifficultyResult
@@ -40,6 +69,7 @@ enum class EDifficultyLevel
 	Easy = 5,
 	Medium = 7,
 	Hard = 10,
+	Insane = 11,
 	Invalid = 12
 };
 

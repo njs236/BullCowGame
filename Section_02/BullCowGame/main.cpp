@@ -180,7 +180,7 @@ bool AskToPlayAgain() {
 
 bool AskDifficulty()
 {
-	std::cout << "Choose Difficulty Level: (1-3)\n ";
+	std::cout << "Choose Difficulty Level: (1 - 3)\n ";
 
 	// these are the valid responses given.
 	char Response[256];

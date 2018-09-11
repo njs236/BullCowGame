@@ -78,11 +78,17 @@ void FBullCowGame::SetDifficultyLevel(int32 level)
 		case 3: //hard
 			DifficultyLevel = EDifficultyLevel::Hard;
 			break;
+		case 4: //insane
+			DifficultyLevel = EDifficultyLevel::Insane;
+			break;
 		default:
 			break;
 	}
 
 	LoadEasyDictionary();
+	if (DifficultyLevel == EDifficultyLevel::Insane) {
+		LoadDictionary();
+	}
 	LoadWord();
 	
 }
@@ -183,12 +189,10 @@ void FBullCowGame::LoadDictionary()
 		while (ifs.good()) {
 			word += c;
 			if (c == '\n') {
-				if (word.length() <= WordLength) { // check to see word is within difficulty word length.
-					if (IsIsogram(word)) { // check to see if word is an isogram.
+				if (IsIsogram(word)) { // check to see if word is an isogram.
 
-						words.insert(word);
+					words.insert(word);
 
-					}
 				}
 				word = "";
 			}
@@ -257,18 +261,29 @@ void FBullCowGame::LoadWord()
 FWordLength FBullCowGame::DetermineWordLength()
 {
 	FWordLength length;
+	FEasyDifficulty easystats;
+	FMediumDifficulty medstats;
+	FHardDifficulty hardstats;
+	FInsaneDifficulty insanestats;
 	switch (GetDifficultyLevel()) {
 	case EDifficultyLevel::Easy:
-		length.beginning = 3;
-		length.end = 5;
+		
+		length.beginning = easystats.Easyshort;
+		length.end = easystats.Easylong;
 		break;
 	case EDifficultyLevel::Medium:
-		length.beginning = 5;
-		length.end = 7;
+		
+		length.beginning = medstats.Mediumshort;
+		length.end = medstats.Mediumlong;
 		break;
 	case EDifficultyLevel::Hard:
-		length.beginning = 5;
-		length.end = 7;
+		length.beginning = hardstats.Hardshort;
+		length.end = hardstats.Hardlong;
+		break;
+	case EDifficultyLevel::Insane:
+		
+		length.beginning = insanestats.Insaneshort;
+		length.end = insanestats.Insanelong;
 		break;
 	default:
 		break;
