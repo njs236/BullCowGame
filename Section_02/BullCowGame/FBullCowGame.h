@@ -64,6 +64,13 @@ enum class EValidityResult
 	Not_LowerCase = 4
 };
 
+enum class EPlayAgainResult
+{
+	Yes = 1,
+	No = 2,
+	Not_Valid_Response = 3
+};
+
 enum class EDifficultyLevel
 {
 	Easy = 5,
@@ -90,7 +97,7 @@ class FBullCowGame
 public:
 	FBullCowGame();
 	int32 Reset(); // TODO make a return type for more descriptive function
-	int32 DeterminePlayAgain(FString response);
+	EPlayAgainResult DeterminePlayAgain(FString response);
 	int32 GetMaxTry() const;
 	int32 GetCurrentTry() const;
 	int32 GetWordLength() const;

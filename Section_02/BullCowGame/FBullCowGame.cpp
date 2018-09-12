@@ -1,3 +1,4 @@
+#pragma once
 #include "FBullCowGame.h"
 #include <stdio.h>
 #include <string.h>
@@ -15,7 +16,21 @@
 
 using int32 = int;
 using FString = std::string;
+/*
+Handles game logic.
+Associated classes:
+	Main program
 
+Associated Methods:
+	StartGame()
+	AskToPlayAgain()
+	AskDifficultyLevel()
+
+Use Dictionary to load files into game.
+
+
+
+*/
 FBullCowGame::FBullCowGame()
 {
 	//LoadEasyDictionary;
@@ -37,16 +52,16 @@ int32 FBullCowGame::Reset()
 
 
 
-int32 FBullCowGame::DeterminePlayAgain(FString response)
+EPlayAgainResult FBullCowGame::DeterminePlayAgain(FString response)
 {
 	if (response[0] == 'Y' || response[0] == 'y') {
-		return 2;
+		return EPlayAgainResult::Yes;
 	}
 	else if (response[0] == 'N' || response[0] == 'n') {
-		return 1;
+		return EPlayAgainResult::No;
 	}
 	else {
-		return 0;
+		return EPlayAgainResult::Not_Valid_Response;
 	}
 }
 
@@ -95,7 +110,7 @@ void FBullCowGame::SetDifficultyLevel(int32 level)
 bool FBullCowGame::IsGameWon() { return bGameIsWon; };
 
 int32 FBullCowGame::GetMaxTry() const { 
-	TMap<int32, int32> WordLengthToMaxTries{ {3,5}, {4,5}, {5,5}, {6,5} ,{7,5}, {8,6}, {9,6}, {10,7}, {11,8}, {12,9}, {13,10}, {14,12}, {15, 15}, {16,20} };
+	TMap<int32, int32> WordLengthToMaxTries{ {3,4}, {4,7}, {5,10}, {6,16} ,{7,20}, {8,25}, {9,30}, {10,45}, {11,60}, {12,60}, {13,60}, {14,70}, {15, 70}, {16,80} };
 
 
 	return WordLengthToMaxTries[MyWord.length()]; 

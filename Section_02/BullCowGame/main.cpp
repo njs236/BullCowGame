@@ -2,11 +2,13 @@
 this acts as a view in a MVC pattern, and is responsible for all user
 interaction. For game logic, see the FBullCowGame class.
 */
+#pragma once
 #include <iostream>
 #include <string>
 #include "FBullCowGame.h"
 #include <map>
 #include <vector>
+#include <stdlib.h>
 
 
 FBullCowGame game;
@@ -46,7 +48,6 @@ int main()
 		std::cout << "key: " << keys[i];
 	}
 	*/
-	//while (true) {
 	bool bPlayAgain = false;
 	
 	do {
@@ -56,9 +57,6 @@ int main()
 		bPlayAgain = AskToPlayAgain();
 	} while (bPlayAgain);
 
-	
-	
-	//}
 	
 	return 0;
 
@@ -90,10 +88,13 @@ FText GetValidGuess() {
 	FText Guess = "";
 	
 	do {
+		// Display Try Number.
 		std::cout << "Try " << game.GetCurrentTry() << " of " << game.GetMaxTry() << ". ";
+		// Enter your guess
 		std::cout << "Enter your guess: ";
 		
 		getline(std::cin, Guess);
+		//Check guess validity
 		EValidityResult ValidityResult = game.CheckGuessValidity(Guess);
 		switch (ValidityResult) {
 		case EValidityResult::OK:
@@ -105,7 +106,7 @@ FText GetValidGuess() {
 		default:
 			std::cout << game.GetWordLength() << " letter isogram required. Please type again.\n\n";
 		}
-	} while (!bGuessIsValid);
+	} while (!bGuessIsValid); //only when guess is not valid. 
 	return Guess;
 }
 
@@ -120,7 +121,7 @@ void StartGame() {
 	
 	// Loop while game is playing.
 	while (game.IsPlaying()) {
-		// Display Try Number.
+
 		
 		FText Guess = GetValidGuess(); 
 		// ValidGuesses:
@@ -130,7 +131,6 @@ void StartGame() {
 		FBullCowCount BullCowCount = game.SubmitValidGuess(Guess);
 			
 		// condition of win or other guess (see documentation for use case)
-		// TODO: keep the logic of the game being won discrete from the view.
 		// I liked the result being given as a simple boolean rather than interfering with game logic in console. 
 		if (game.IsGameWon()) {
 			
@@ -159,55 +159,64 @@ void PrintGameSummary()
 
 bool AskToPlayAgain() {
 	std::cout << "Do you want to play again? ";
+	bool bPlayAgainValid = false;
+	do {
+		// prompt to enter to play again. 
+		FText Response = "";
+		getline(std::cin, Response);
+		EPlayAgainResult response = game.DeterminePlayAgain(Response);
+		if (response == EPlayAgainResult::Yes) {
+			system("CLS");
+			return true;
+		}
+		else if (response == EPlayAgainResult::No) {
 
-	// these are the valid responses given.
-	FText Response = "";
-	getline(std::cin, Response);
-	int32 response = game.DeterminePlayAgain(Response);
-	if (response == 2) {
-		return true;
-	}
-	else if (response == 1) {
-
-		return false;
-	}
-	else {
-		std::cout << "Invalid Response!" << std::endl;
-		AskToPlayAgain();
-	}
+			return false;
+		}
+		else {
+			std::cout << "Invalid Response!" << std::endl;
+		}
+	} while (!bPlayAgainValid);
 	return false;
 }
 
 bool AskDifficulty()
 {
 	std::cout << "Choose Difficulty Level: (1 - 3)\n ";
+	bool bDifficultValid = false;
+	do {
+		// prompt to enter difficulty level
+		char Response[256];
+		fgets(Response, 256, stdin);
+		int32 i = atoi(Response);
+		//Check to see if prompt is valid input. 
+		EDifficultyResult response = game.CheckDifficultyValidity(Response);
+		// Prompt is Valid then
+		if (response == EDifficultyResult::OK) {
+			bDifficultValid = true;
+			// Set difficulty level. 
+			game.SetDifficultyLevel(i);
+			// Respond with what difficulty level they have chosen. 
+			switch (game.GetDifficultyLevel()) {
+			case EDifficultyLevel::Easy:
+				std::cout << "You've chosen difficulty Level Easy. \n\n";
+				break;
+			case EDifficultyLevel::Medium:
+				std::cout << "You've chosen difficulty Level Medium.\n\n";
+				break;
+			case EDifficultyLevel::Hard:
+				std::cout << "You've chosen difficulty Level Hard.\n\n";
+				break;
+			default:
+				break;
 
-	// these are the valid responses given.
-	char Response[256];
-	fgets(Response,256, stdin);
-	int32 i = atoi(Response);
-	EDifficultyResult response = game.CheckDifficultyValidity(Response);
-	if (response == EDifficultyResult::OK) {
-		game.SetDifficultyLevel(i);
-		switch (game.GetDifficultyLevel()) {
-		case EDifficultyLevel::Easy:
-			std::cout << "You've chosen difficulty Level Easy. \n\n";
-			break;
-		case EDifficultyLevel::Medium:
-			std::cout << "You've chosen difficulty Level Medium.\n\n";
-			break;
-		case EDifficultyLevel::Hard:
-			std::cout << "You've chosen difficulty Level Hard.\n\n";
-			break;
-		default:
-			break;
+			}
+		}
+		else {
+			std::cout << "Invalid Response!" << std::endl;
 
 		}
-	}
-	else {
-		std::cout << "Invalid Response!" << std::endl;
-		AskDifficulty();
-	}
+	} while (!bDifficultValid);
 	std::cout << "You have " << game.GetMaxTry() << " tries to guess the word. ";
 	std::cout << "Can you guess the " << game.GetWordLength() << " letter isogram I'm thinking of?" << std::endl << "\n";
 	return false;
