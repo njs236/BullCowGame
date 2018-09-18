@@ -1,9 +1,13 @@
+/* the game logic (no view code)
+Guess a word like mastermind */
+
 #pragma once
 #include <string>
 #include <map>
 #include <unordered_set>
 #include <fstream>
 
+// make syntax Unreal friendly
 using int32 = int;
 using FString = std::string;
 

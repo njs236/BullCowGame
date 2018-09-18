@@ -13,9 +13,11 @@ interaction. For game logic, see the FBullCowGame class.
 
 FBullCowGame game;
 
+// to make syntax Unreal friendly
 using FText = std::string;
 using int32 = int;
 
+// function prototypes as outside a class
 void DisplayIntroduction();
 void StartGame();
 bool AskDifficulty();
@@ -64,7 +66,7 @@ int main()
 
 
 void DisplayIntroduction() {
-	// This code is not going to change, so I have put it in its own function.
+
 	std::cout << "\n\n" << "Welcome to Bulls and Cows, a fun word game" << std::endl;
 	std::cout << std::endl;
 	std::cout << " }____{                  ___" << std::endl;
@@ -112,7 +114,7 @@ FText GetValidGuess() {
 
 
 
-// Handling of the game on screen. 
+// Plays game until completion
 void StartGame() {
 
 	// Reset Game.
