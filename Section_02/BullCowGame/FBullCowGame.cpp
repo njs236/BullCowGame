@@ -57,6 +57,9 @@ EPlayAgainResult FBullCowGame::DeterminePlayAgain(FString response)
 	if (response[0] == 'Y' || response[0] == 'y') {
 		return EPlayAgainResult::Yes;
 	}
+	else if (response[0] == 'S' || response[0] == 's') {
+		return EPlayAgainResult::Same;
+	}
 	else if (response[0] == 'N' || response[0] == 'n') {
 		return EPlayAgainResult::No;
 	}

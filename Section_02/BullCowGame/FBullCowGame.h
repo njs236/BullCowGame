@@ -72,7 +72,9 @@ enum class EPlayAgainResult
 {
 	Yes = 1,
 	No = 2,
-	Not_Valid_Response = 3
+	Same = 3,
+	Default = 4,
+	Not_Valid_Response = 5
 };
 
 enum class EDifficultyLevel

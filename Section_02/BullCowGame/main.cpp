@@ -24,6 +24,7 @@ bool AskDifficulty();
 FText GetValidGuess();
 bool AskToPlayAgain();
 void PrintGameSummary();
+EPlayAgainResult result;
 std::vector<char> extract_keys(std::map<char, int> const& input_map);
 
 std::vector<char> extract_keys(std::map<char, int> const& input_map)
@@ -39,7 +40,7 @@ std::vector<char> extract_keys(std::map<char, int> const& input_map)
 
 int main()
 {
-	
+	result = EPlayAgainResult::Default;
 	game = FBullCowGame();
 	/*
 	std::map<char, int> map = game.NORDER("blah");
@@ -54,7 +55,9 @@ int main()
 	
 	do {
 		DisplayIntroduction();
-		AskDifficulty();
+		if (result == EPlayAgainResult::Default || result == EPlayAgainResult::Yes) {
+			AskDifficulty(); //don't show difficulty if user wants to try same word
+		}
 		StartGame();
 		bPlayAgain = AskToPlayAgain();
 	} while (bPlayAgain);
@@ -160,7 +163,12 @@ void PrintGameSummary()
 }
 
 bool AskToPlayAgain() {
-	std::cout << "Do you want to play again? ";
+	std::cout << "Do you want to play again?\n";
+	std::cout << "[Y]es\n";
+	if (!game.IsGameWon()) {
+		std::cout << "[S]ame word\n";
+	}
+	std::cout << "[N]o\n";
 	bool bPlayAgainValid = false;
 	do {
 		// prompt to enter to play again. 
@@ -169,10 +177,17 @@ bool AskToPlayAgain() {
 		EPlayAgainResult response = game.DeterminePlayAgain(Response);
 		if (response == EPlayAgainResult::Yes) {
 			system("CLS");
+			result = EPlayAgainResult::Yes;
 			return true;
 		}
+		else if (!game.IsGameWon()) {
+			if (response == EPlayAgainResult::Same) {
+				system("CLS");
+				result = EPlayAgainResult::Same;
+				return true;
+			} 
+		}
 		else if (response == EPlayAgainResult::No) {
-
 			return false;
 		}
 		else {

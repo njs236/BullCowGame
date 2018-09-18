@@ -1,0 +1,10 @@
+﻿  FBullCowGame.cpp
+h:\unrealc++\unrealprojects\bullcowgame\section_02\bullcowgame\fbullcowgame.cpp(73): warning C4267: 'return': conversion from 'size_t' to 'int32', possible loss of data
+h:\unrealc++\unrealprojects\bullcowgame\section_02\bullcowgame\fbullcowgame.cpp(119): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+h:\unrealc++\unrealprojects\bullcowgame\section_02\bullcowgame\fbullcowgame.cpp(159): warning C4267: 'initializing': conversion from 'size_t' to 'int32', possible loss of data
+h:\unrealc++\unrealprojects\bullcowgame\section_02\bullcowgame\fbullcowgame.cpp(268): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  main.cpp
+  Generating code
+  All 727 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  BullCowGame.vcxproj -> H:\unrealc++\UnrealProjects\BullCowGame\Section_02\x64\Release\BullCowGame.exe

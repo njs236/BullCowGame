@@ -1,6 +1,1 @@
-﻿  FBullCowGame.cpp
-h:\unrealc++\unrealprojects\bullcowgame\section_02\bullcowgame\fbullcowgame.cpp(243): warning C4018: '<=': signed/unsigned mismatch
-h:\unrealc++\unrealprojects\bullcowgame\section_02\bullcowgame\fbullcowgame.cpp(244): warning C4018: '<=': signed/unsigned mismatch
-h:\unrealc++\unrealprojects\bullcowgame\section_02\bullcowgame\fbullcowgame.cpp(265): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-h:\unrealc++\unrealprojects\bullcowgame\section_02\bullcowgame\fbullcowgame.cpp(413): warning C4018: '<': signed/unsigned mismatch
-  BullCowGame.vcxproj -> H:\unrealc++\UnrealProjects\BullCowGame\Section_02\Debug\BullCowGame.exe
+﻿
